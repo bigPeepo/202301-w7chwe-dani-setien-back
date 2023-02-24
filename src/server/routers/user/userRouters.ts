@@ -1,9 +1,10 @@
 import { Router } from "express";
-import { upload } from "..";
-import { signinUser } from "../../controllers/userControllers.js";
+
+import { signupUser } from "../../controllers/userControllers.js";
+import { upload } from "../index.js";
 
 const usersRouter = Router();
 
-usersRouter.post("/signin", upload.single("image"), signinUser);
+usersRouter.post("/signup", upload.single("image"), signupUser);
 
 export default usersRouter;

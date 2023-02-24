@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const connectDataBase = async (url: string) => {
+const connectDatabase = async (url: string) => {
   mongoose.set("strictQuery", false);
 
   try {
@@ -10,4 +10,4 @@ const connectDataBase = async (url: string) => {
   }
 };
 
-export default connectDataBase;
+export default connectDatabase;
