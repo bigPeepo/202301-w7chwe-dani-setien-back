@@ -1,8 +1,5 @@
-import express from "express";
 import { CustomError } from "../customError/customError.js";
-
-const app = express();
-app.disable("x-powered-by");
+import { app } from "./index.js";
 
 export const startServer = async (port: number) =>
   new Promise((resolve, reject) => {
