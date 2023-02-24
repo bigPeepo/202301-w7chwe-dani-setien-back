@@ -15,7 +15,4 @@ module.exports = {
     ecmaVersion: "latest",
     sourceType: "module",
   },
-  rules: {
-    "no-implicit-coercion": "false", // Para convertir a número con +
-  },
 };
