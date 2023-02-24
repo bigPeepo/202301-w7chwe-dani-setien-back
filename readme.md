@@ -1,0 +1,1 @@
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=bigPeepo_202301-w7chwe-dani-setien-back&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=bigPeepo_202301-w7chwe-dani-setien-back)
