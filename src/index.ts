@@ -9,7 +9,10 @@ const mongoUrl = process.env.ROBOTS_DATABASE!;
 
 try {
   await startServer(Number(port));
-  debug(`Connected to server on port ${port} `);
+  debug("Connected to server on port");
+
+  await startServer(+port);
+  debug("Server listening on port");
 } catch (error: unknown) {
   debug((error as Error).message);
 }
