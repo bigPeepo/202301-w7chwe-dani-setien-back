@@ -13,7 +13,7 @@
     "eslint-audit": "npx eslint --ignore-path .gitignore . --max-warnings 0",
     "test": "jest",
     "test:dev": "jest --watch",
-    "test:coverage": "jest --coverage --watchAll=false"
+    "test:coverage": "npx jest --coverage --watchAll=false"
   },
   "keywords": [],
   "author": "",
