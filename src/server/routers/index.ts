@@ -1,12 +1,17 @@
 import multer from "multer";
 
-const storage = multer.diskStorage({
-  destination(req, file, callback) {
-    callback(null, "uploads/");
+const multerConfig = {
+  storage: multer.diskStorage({
+    destination(req, file, callback) {
+      callback(null, "uploads/");
+    },
+    filename(req, file, callback) {
+      callback(null, `${Date.now()}${file.originalname}`);
+    },
+  }),
+  limits: {
+    fileSize: 8_000_000,
   },
-  filename(req, file, callback) {
-    callback(null, `${Date.now()}${file.originalname}`);
-  },
-});
+};
 
-export const upload = multer({ storage });
+export const upload = multer(multerConfig);
