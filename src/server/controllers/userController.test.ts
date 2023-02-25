@@ -48,15 +48,50 @@ describe("Given a POST users/signup endpoint", () => {
       expect(response.body).toStrictEqual(expectedResponseMessage);
     });
   });
+
+  describe("When it receives a request with name 'elPirri', password 'amorDeJaco' and no email", () => {
+    test("Then it should respond with status 500 and an error message 'Error creating the user'", async () => {
+      const expectedStatusCode = 500;
+      const expectedResponseMessage = {
+        error: "Error creating the user",
+      };
+
+      const faultyMockUser = {
+        username: mockUser.username,
+        password: mockUser.password,
+      };
+
+      const response = await request(app)
+        .post(endpoint)
+        .send(faultyMockUser)
+        .expect(expectedStatusCode);
+
+      expect(response.body).toStrictEqual(expectedResponseMessage);
+    });
+  });
 });
 
 describe("Given a POST users/login endpoint", () => {
   const endpoint = "/user/login";
 
-  describe("When it receives a request with name 'elPirri' and password 'amorDePicoleto'", () => {
-    test("Then it should respond with status 401 and an error", async () => {
+  describe("When it receives a request with name 'elPirri' and password 'hijoDePicoleto'", () => {
+    beforeAll(async () => {
+      const saltLength = 10;
+      const hashedPassword = await bcrypt.hash(mockUser.password, saltLength);
+
+      const userCreationRequest = {
+        username: mockUser.username,
+        password: hashedPassword,
+        email: mockUser.email,
+        image: mockUser.email,
+      };
+
+      await User.create(userCreationRequest);
+    });
+
+    test("Then it should respond with status 401 and an error message", async () => {
       const expectedStatusCode = 401;
-      const wrongPassword = "amorDePicoleto";
+      const wrongPassword = "hijoDePicoleto";
       const expectedResponse = {
         error:
           "The combination loginname and password is incorrect, please try again.",
@@ -110,6 +145,30 @@ describe("Given a POST users/login endpoint", () => {
         .expect(expectedStatusCode);
 
       expect(response.body).toHaveProperty(expectedProperty);
+    });
+  });
+
+  describe("When it receives a request with name 'Jaro' and password 'vivoEnLaModelo'", () => {
+    test("Then it should respond with status 401 and an error message", async () => {
+      const expectedStatusCode = 401;
+      const inexistentUserName = "Jaro";
+      const password = "unimportant";
+      const expectedResponse = {
+        error:
+          "The combination loginname and password is incorrect, please try again.",
+      };
+
+      const userCredentials = {
+        username: inexistentUserName,
+        password,
+      };
+
+      const response = await request(app)
+        .post(endpoint)
+        .send(userCredentials)
+        .expect(expectedStatusCode);
+
+      expect(response.body).toStrictEqual(expectedResponse);
     });
   });
 });

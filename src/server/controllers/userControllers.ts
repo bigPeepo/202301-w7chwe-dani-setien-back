@@ -53,7 +53,7 @@ export const loginUser = async (
 ) => {
   const { password, username } = req.body;
 
-  const user = await User.findOne({ username });
+  const user = await User.findOne({ username }).exec();
 
   if (!user) {
     const reasonForRejection = "username";
