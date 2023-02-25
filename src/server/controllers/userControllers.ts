@@ -1,9 +1,14 @@
 import "../../loadEnvironments.js";
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 import { type NextFunction, type Request, type Response } from "express";
-import { type UserCreationRequest as UserCreationRequestBody } from "../../types.js";
+import {
+  type CustomLoginRequest,
+  type UserCreationRequest as UserCreationRequestBody,
+} from "../../types.js";
 import { CustomError } from "../../customError/customError.js";
 import { User } from "../../database/models/UserSchema.js";
+import { rejectedLogin } from "../../middlewares/rejectedLogin/rejectedLogin.js";
 
 export const signupUser = async (
   req: Request<
@@ -39,4 +44,41 @@ export const signupUser = async (
     );
     next(createUserError);
   }
+};
+
+export const loginUser = async (
+  req: CustomLoginRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  const { password, username } = req.body;
+
+  const user = await User.findOne({ username });
+
+  if (!user) {
+    const reasonForRejection = "username";
+    rejectedLogin(reasonForRejection, next);
+
+    return;
+  }
+
+  const loginSuccess = await bcrypt.compare(password, user.password);
+
+  if (!loginSuccess) {
+    const reasonForRejection = "password";
+    rejectedLogin(reasonForRejection, next);
+
+    return;
+  }
+
+  const jwtPayload = {
+    sub: user._id,
+    username,
+  };
+
+  const token = jwt.sign(jwtPayload, process.env.JWT_SECRET!, {
+    expiresIn: "2d",
+  });
+
+  res.status(200).json({ token });
 };

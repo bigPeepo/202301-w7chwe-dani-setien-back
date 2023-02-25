@@ -1,5 +1,7 @@
 import request from "supertest";
 import mongoose from "mongoose";
+import jwt from "jsonwebtoken";
+import bcrypt from "bcryptjs";
 import { MongoMemoryServer } from "mongodb-memory-server";
 import connectDatabase from "../../database/connectDatabase";
 import { User } from "../../database/models/UserSchema";
@@ -44,6 +46,47 @@ describe("Given a POST users/signup endpoint", () => {
         .expect(expectedStatusCode);
 
       expect(response.body).toStrictEqual(expectedResponseMessage);
+    });
+  });
+});
+
+describe("Given a POST users/login endpoint", () => {
+  const endpoint = "/user/login";
+
+  describe("When it receives a request with name 'elPirri' and password 'amorDeJaco'", () => {
+    beforeAll(async () => {
+      const saltLength = 10;
+      const hashedPassword = await bcrypt.hash(mockUser.password, saltLength);
+
+      const userCreationRequest = {
+        username: mockUser.username,
+        password: hashedPassword,
+        email: mockUser.email,
+        image: mockUser.email,
+      };
+
+      await User.create(userCreationRequest);
+    });
+
+    test("Then it should respond with status 200 and a token", async () => {
+      const expectedStatusCode = 200;
+      const expectedProperty = "token";
+
+      const userCredentials = {
+        username: mockUser.username,
+        password: mockUser.password,
+      };
+
+      jwt.sign = jest.fn().mockReturnValue({
+        token: "abc",
+      });
+
+      const response = await request(app)
+        .post(endpoint)
+        .send(userCredentials)
+        .expect(expectedStatusCode);
+
+      expect(response.body).toHaveProperty(expectedProperty);
     });
   });
 });
