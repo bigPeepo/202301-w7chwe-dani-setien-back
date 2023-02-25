@@ -1,6 +1,6 @@
 import { type NextFunction, type Request, type Response } from "express";
 import createDebug from "debug";
-import { type CustomError } from "../../customError/customError";
+import { type CustomError } from "../../customError/customError.js";
 
 export const debug = createDebug("sn:error");
 
