@@ -1,7 +1,8 @@
 import { type Response } from "express";
-import { CustomError } from "../customError/customError";
-import { mockNext, mockRequest, mockResponse } from "../mocks/mocks";
-import { generalError, notFoundError } from "./errorMiddlewares";
+import { CustomError } from "../../customError/customError";
+import { mockNext, mockRequest, mockResponse } from "../../mocks/mocks";
+import { notFoundError } from "../notFoundError/notFoundError";
+import { generalError } from "./generalError";
 
 describe("Given a generalError function", () => {
   describe("When it receives an error with status code 500", () => {

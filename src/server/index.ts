@@ -2,10 +2,8 @@ import express from "express";
 import morgan from "morgan";
 import cors from "cors";
 import usersRouter from "./routers/user/userRouters.js";
-import {
-  generalError,
-  notFoundError,
-} from "../middlewares/errorMiddlewares.js";
+import { notFoundError } from "../middlewares/notFoundError/notFoundError.js";
+import { generalError } from "../middlewares/generalError/generalError.js";
 
 export const app = express();
 app.disable("x-powered-by");
