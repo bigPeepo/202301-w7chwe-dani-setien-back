@@ -35,7 +35,7 @@ export const signupUser = async (
     const createUserError = new CustomError(
       error.message as string,
       500,
-      "Error creting the user"
+      "Error creating the user"
     );
     next(createUserError);
   }
