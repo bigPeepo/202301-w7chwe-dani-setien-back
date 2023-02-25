@@ -1,6 +1,9 @@
 import multer from "multer";
 
 const multerConfig = {
+  limits: {
+    fileSize: 1024 * 1024 * 8,
+  },
   storage: multer.diskStorage({
     destination(req, file, callback) {
       callback(null, "uploads/");
@@ -9,9 +12,6 @@ const multerConfig = {
       callback(null, `${Date.now()}${file.originalname}`);
     },
   }),
-  limits: {
-    fileSize: 8_000_000,
-  },
 };
 
 export const upload = multer(multerConfig);

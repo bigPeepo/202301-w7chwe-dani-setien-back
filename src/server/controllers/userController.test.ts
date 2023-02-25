@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 import { MongoMemoryServer } from "mongodb-memory-server";
 import connectDatabase from "../../database/connectDatabase";
 import { User } from "../../database/models/UserSchema";
-import { app } from "..";
+import { app } from "../index";
 
 let server: MongoMemoryServer;
 
