@@ -53,6 +53,29 @@ describe("Given a POST users/signup endpoint", () => {
 describe("Given a POST users/login endpoint", () => {
   const endpoint = "/user/login";
 
+  describe("When it receives a request with name 'elPirri' and password 'amorDePicoleto'", () => {
+    test("Then it should respond with status 401 and an error", async () => {
+      const expectedStatusCode = 401;
+      const wrongPassword = "amorDePicoleto";
+      const expectedResponse = {
+        error:
+          "The combination loginname and password is incorrect, please try again.",
+      };
+
+      const userCredentials = {
+        username: mockUser.username,
+        password: wrongPassword,
+      };
+
+      const response = await request(app)
+        .post(endpoint)
+        .send(userCredentials)
+        .expect(expectedStatusCode);
+
+      expect(response.body).toStrictEqual(expectedResponse);
+    });
+  });
+
   describe("When it receives a request with name 'elPirri' and password 'amorDeJaco'", () => {
     beforeAll(async () => {
       const saltLength = 10;
@@ -78,7 +101,7 @@ describe("Given a POST users/login endpoint", () => {
       };
 
       jwt.sign = jest.fn().mockReturnValue({
-        token: "abc",
+        token: "",
       });
 
       const response = await request(app)
