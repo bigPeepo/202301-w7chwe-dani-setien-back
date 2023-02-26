@@ -83,7 +83,7 @@ describe("Given a POST users/login endpoint", () => {
         username: mockUser.username,
         password: hashedPassword,
         email: mockUser.email,
-        image: mockUser.email,
+        image: mockUser.image,
       };
 
       await User.create(userCreationRequest);

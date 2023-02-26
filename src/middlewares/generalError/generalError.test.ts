@@ -1,7 +1,6 @@
 import { type Response } from "express";
 import { CustomError } from "../../customError/customError";
 import { mockNext, mockRequest, mockResponse } from "../../mocks/mocks";
-import { notFoundError } from "../notFoundError/notFoundError";
 import { generalError } from "./generalError";
 
 describe("Given a generalError function", () => {
@@ -55,20 +54,6 @@ describe("Given a generalError function", () => {
       const expectedErrorWithMessage = { error: "Something went wrong" };
 
       expect(mockResponse.json).toHaveBeenCalledWith(expectedErrorWithMessage);
-    });
-  });
-});
-
-describe("Given a notFoundError middleware", () => {
-  describe("When it receives a response", () => {
-    test("Then it should call its next function with a status code of 404", async () => {
-      notFoundError(mockRequest, mockResponse as Response, mockNext);
-
-      expect(mockNext).toHaveBeenCalledWith(
-        expect.objectContaining({
-          statusCode: 404,
-        })
-      );
     });
   });
 });
