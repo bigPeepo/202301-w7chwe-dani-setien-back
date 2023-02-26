@@ -4,6 +4,7 @@ import cors from "cors";
 import usersRouter from "./routers/user/userRouters.js";
 import { notFoundError } from "../middlewares/notFoundError/notFoundError.js";
 import { generalError } from "../middlewares/generalError/generalError.js";
+import ping from "../middlewares/ping/ping.js";
 
 export const app = express();
 app.disable("x-powered-by");
@@ -21,6 +22,8 @@ app.use(morgan("dev"));
 app.use(express.json());
 
 app.use("/user", usersRouter);
+
+app.get("/", ping);
 
 app.use("/", notFoundError);
 app.use("/", generalError);
